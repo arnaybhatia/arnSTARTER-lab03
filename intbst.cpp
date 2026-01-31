@@ -292,8 +292,32 @@ int IntBST::getSuccessor(int value) const
 bool IntBST::remove(int value)
 {
     Node *n = getNodeFor(value, root);
-    if(!n){
+    if (!n)
+    {
         return false;
+    }
+    if (n == root)
+    {
+        if (n->left && !n->right)
+        {
+            root = n->left;
+            root->parent = nullptr;
+            delete n;
+            return true;
+        }
+        if (!n->left && n->right)
+        {
+            root = n->right;
+            root->parent = nullptr;
+            delete n;
+            return true;
+        }
+        if (!n->left && !n->right)
+        {
+            root = nullptr;
+            delete n;
+            return true;
+        }
     }
     if (!n->left && !n->right)
     {
@@ -308,7 +332,8 @@ bool IntBST::remove(int value)
         delete n;
         return true;
     }
-    if(n->left && !n->right){
+    if (n->left && !n->right)
+    {
         if (n->parent->left == n)
         {
             n->parent->left = n->left;
@@ -317,10 +342,12 @@ bool IntBST::remove(int value)
         {
             n->parent->right = n->left;
         }
-        n->left->parent=n->parent;
+        n->left->parent = n->parent;
         delete n;
         return true;
-    }if(!n->left && n->right){
+    }
+    if (!n->left && n->right)
+    {
         if (n->parent->left == n)
         {
             n->parent->left = n->right;
@@ -329,15 +356,15 @@ bool IntBST::remove(int value)
         {
             n->parent->right = n->right;
         }
-        n->right->parent=n->parent;
+        n->right->parent = n->parent;
         delete n;
         return true;
     }
-    if (n->left && n->right){
+    if (n->left && n->right)
+    {
         int lol = getPredecessor(value);
         remove(getPredecessor(value));
-        n->info=lol;
-        
+        n->info = lol;
     }
     return true;
 }

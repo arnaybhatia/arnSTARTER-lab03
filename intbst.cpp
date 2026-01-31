@@ -334,8 +334,10 @@ bool IntBST::remove(int value)
         return true;
     }
     if (n->left && n->right){
-        n->info=getPredecessor(value);
+        int lol = getPredecessor(value);
         remove(getPredecessor(value));
+        n->info=lol;
+        
     }
-    return false;
+    return true;
 }
